@@ -15,9 +15,28 @@ public class MainSolver {
     public static void main(String args[]) {
         String csvFile = "test1Puzzle.txt"; //FIXME
         int[][] givenPuzzle = csvHandler(csvFile);
+        int[][] solvedPuzzle = puzzleSolver(givenPuzzle);
 
     }
 
+    public int nextVarCalc(int[][] given) {
+        
+    }
+
+    public static int[][] puzzleSolver(int[][] given) {
+
+        int nextVar = nextVarCalc(given);
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                int currNum = given[i][j];
+                if (currNum == 0) {
+                    given[i][j] = nextVar;
+                }
+
+            }
+        }
+    }
     public static int[][] csvHandler(String file) {
 
         int[][] puzzle = new int[9][9];
