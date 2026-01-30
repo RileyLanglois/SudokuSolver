@@ -16,7 +16,11 @@ public class MainSolver {
         String csvFile = "test1Puzzle.txt"; //FIXME
         int[][] givenPuzzle = csvHandler(csvFile);
         int[][] solvedPuzzle = puzzleSolver(givenPuzzle);
-
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                System.out.print(solvedPuzzle[row][col]);
+            }
+        }
     }
 
     /**
@@ -74,6 +78,7 @@ public class MainSolver {
                     for (int i = 1; i < 10; i++) {
                         if(isValid(given, row, col, i)) {
                             given[row][col] = i;
+                            System.out.println("Added number: " + i);
                             puzzleSolver(given);
                         } else {
                             given[row][col] = 0;
@@ -83,6 +88,8 @@ public class MainSolver {
 
             }
         }
+
+        return given;
     }
     public static int[][] csvHandler(String file) {
 
