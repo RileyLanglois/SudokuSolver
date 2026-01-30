@@ -19,19 +19,66 @@ public class MainSolver {
 
     }
 
-    public int nextVarCalc(int[][] given) {
-        
+    /**
+     * This method is used to determine if the previously placed number is valid in the sudoku grid.
+     *
+     * @param given = the given puzzle
+     * @param row = the row of the currNum
+     * @param col = the col of the currNum
+     * @param currNum = the number just added to the puzzle
+     * @return false if number is invalid, true if number is valid
+     */
+    public static boolean isValid(int[][] given, int row, int col, int currNum) {
+
+        // Iterate over shared columns
+        for (int c = 0; c < 9; c++) {
+            if (given[row][c] == currNum) {
+                return false;
+            }
+        }
+
+        // Iterate over shared rows
+        for (int r = 0; r < 9; r++) {
+            if (given[r][col] == currNum) {
+                return false;
+            }
+        }
+
+        // Determine what box the currNum is in
+        int boxRow = (row / 3) * 3;
+        int boxCol = (col / 3) * 3;
+
+        // Iterate the box and ensure the number is unique
+        for (int checkR = boxRow; checkR < boxRow + 3; checkR++) {
+            for (int checkC = boxCol; checkC < boxCol + 3; checkC++) {
+                if (checkR == row && checkC == col) {
+                    continue;
+                }
+
+                if (given[checkR][checkC] == currNum) {
+                    return false;
+                }
+            }
+        }
+
+        // If all else passed, return true
+        return true;
     }
 
     public static int[][] puzzleSolver(int[][] given) {
 
-        int nextVar = nextVarCalc(given);
-
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                int currNum = given[i][j];
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                int currNum = given[row][col];
                 if (currNum == 0) {
-                    given[i][j] = nextVar;
+                    for (int i = 1; i < 10; i++) {
+                        if(isValid(given, row, col, i)) {
+                            given[row][col] = i;
+                            puzzleSolver(given);
+                        } else {
+                            given[row][col] = 0;
+                        }
+                    }
                 }
 
             }
