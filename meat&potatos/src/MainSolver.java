@@ -15,11 +15,15 @@ public class MainSolver {
     public static void main(String args[]) {
         String csvFile = "test1Puzzle.txt"; //FIXME
         int[][] givenPuzzle = csvHandler(csvFile);
-        int[][] solvedPuzzle = puzzleSolver(givenPuzzle);
+
+        puzzleSolver(givenPuzzle);
+
         for (int row = 0; row < 9; row++) {
+            System.out.print("Row " + (row + 1) + ": ");
             for (int col = 0; col < 9; col++) {
-                System.out.print(solvedPuzzle[row][col]);
+                System.out.print(givenPuzzle[row][col] + " ");
             }
+            System.out.println();
         }
     }
 
@@ -69,28 +73,30 @@ public class MainSolver {
         return true;
     }
 
-    public static int[][] puzzleSolver(int[][] given) {
+    public static boolean puzzleSolver(int[][] given) {
 
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
                 int currNum = given[row][col];
                 if (currNum == 0) {
                     for (int i = 1; i < 10; i++) {
-                        if(isValid(given, row, col, i)) {
+                        if (isValid(given, row, col, i)) {
                             given[row][col] = i;
-                            System.out.println("Added number: " + i);
-                            puzzleSolver(given);
-                        } else {
+                            if (puzzleSolver(given)) {
+                                return true;
+                            }
+
                             given[row][col] = 0;
+
                         }
                     }
+                    return false;
                 }
-
             }
         }
-
-        return given;
+        return true;
     }
+
     public static int[][] csvHandler(String file) {
 
         int[][] puzzle = new int[9][9];
